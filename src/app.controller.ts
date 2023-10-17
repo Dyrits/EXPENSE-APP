@@ -1,7 +1,7 @@
-import { Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Controller, Delete, Get, NotFoundException, Param, Post, Put } from "@nestjs/common";
 
 import { AppService } from "./app.service";
-import { ReportType } from "./data";
+import { ReportType } from "./enums";
 
 @Controller("/report/:type")
 export class AppController {
@@ -22,7 +22,9 @@ export class AppController {
       [ReportType.Income]: this.appService.getIncomeReport,
       [ReportType.Expense]: this.appService.getExpenseReport,
     }
-    return getters[type](id);
+    const report = getters[type](id);
+    if (report) { return report; }
+    throw new NotFoundException("No report was found with the provided identifier.");
   }
 
   @Post()
