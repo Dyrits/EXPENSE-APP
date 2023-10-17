@@ -5,6 +5,13 @@ export interface INewReport {
   amount: number;
 }
 
+export interface IUpdatedReport {
+  id?: string;
+  source?: string;
+  amount?: number;
+  type: ReportType.Income | ReportType.Expense;
+}
+
 export interface IReport extends INewReport {
   id: string;
   timestamps: {

@@ -2,7 +2,7 @@ import { v4 as uuid } from "uuid";
 import { Injectable } from "@nestjs/common";
 
 import { ReportType } from "./enums";
-import { INewReport, IReport } from "./interfaces";
+import { INewReport, IReport, IUpdatedReport } from "./interfaces";
 import { data } from "./data";
 
 @Injectable()
@@ -33,19 +33,22 @@ export class AppService {
     return report;
   }
 
-  updateIncomeReport(id: string) {
-    return {};
+  updateReport(type: ReportType, id: string, body: IUpdatedReport): IReport {
+    const report = this.getReport(type, id);
+    if (report) {
+      report.source = body.source || report.source;
+      report.amount = body.amount || report.amount;
+      report.timestamps.updated = new Date();
+    }
+    return report;
   }
 
-  updateExpenseReport(id: string) {
-    return {};
-  }
-
-  deleteIncomeReport(id: string) {
-    return {};
-  }
-
-  deleteExpenseReport(id: string) {
-    return {};
+  deleteReport(type: ReportType, id: string) {
+    const reports = this.getReports(type);
+    const index = reports.findIndex((report: IReport) => report.id === id);
+    if (~index) {
+      reports.splice(index, 1);
+      return {};
+    }
   }
 }

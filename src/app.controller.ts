@@ -1,7 +1,7 @@
-import { Controller, Delete, Get, NotFoundException, Param, Post, Put, Body } from "@nestjs/common";
+import { Controller, Delete, Get, NotFoundException, Param, Post, Put, Body, HttpCode } from "@nestjs/common";
 
 import { AppService } from "./app.service";
-import { INewReport } from "./interfaces";
+import { INewReport, IUpdatedReport } from "./interfaces";
 import { ReportType } from "./enums";
 
 @Controller("/report/:type")
@@ -17,7 +17,7 @@ export class AppController {
   getReport(@Param("type") type: ReportType, @Param("id") id: string) {
     const report = this.appService.getReport(type, id);
     if (report) { return report; }
-    throw new NotFoundException("No report was found with the provided identifier.");
+    throw new NotFoundException(`No report was found with the provided identifier (${id}).`);
   }
 
   @Post()
@@ -26,20 +26,18 @@ export class AppController {
   }
 
   @Put(":id")
-  updateReport(@Param("type") type: ReportType, @Param("id") id: string) {
-    const updaters = {
-      [ReportType.Income]: this.appService.updateIncomeReport,
-      [ReportType.Expense]: this.appService.updateExpenseReport,
-    }
-    return updaters[type](id);
+  updateReport(@Body() body: IUpdatedReport, @Param("type") type: ReportType, @Param("id") id: string) {
+    const report = this.appService.updateReport(type, id, body);
+    if (report) { return report; }
+    throw new NotFoundException(`No report was found with the provided identifier (${id}).`);
   }
 
   @Delete(":id")
+  @HttpCode(204)
   deleteReport(@Param("type") type: ReportType, @Param("id") id: string) {
-    const deleters = {
-      [ReportType.Income]: this.appService.deleteIncomeReport,
-      [ReportType.Expense]: this.appService.deleteExpenseReport,
+    const result = this.appService.deleteReport(type, id);
+    if (!result) {
+      throw new NotFoundException(`No report was found with the provided identifier (${id}).`);
     }
-    return deleters[type](id);
   }
 }
