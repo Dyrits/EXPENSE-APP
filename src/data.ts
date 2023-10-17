@@ -1,10 +1,13 @@
+import { v4 as uuid } from "uuid";
+
 import { ReportType } from "./enums";
 import { IData } from "./interfaces";
+
 
 export const data: IData = {
   reports: [
     {
-      id: "1",
+      id: uuid(),
       source: "Salary",
       amount: 1000,
       timestamps: {
@@ -14,7 +17,7 @@ export const data: IData = {
       type: ReportType.Income
     },
     {
-      id: "2",
+      id: uuid(),
       source: "Rend",
       amount: 500,
       timestamps: {

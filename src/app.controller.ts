@@ -1,70 +1,45 @@
-import { Controller, Delete, Get, NotFoundException, Param, Post, Put } from "@nestjs/common";
+import { Controller, Delete, Get, NotFoundException, Param, Post, Put, Body } from "@nestjs/common";
 
 import { AppService } from "./app.service";
-import { IReport, IIncomeReport, IExpenseReport, IReportHandlers } from "./interfaces";
+import { INewReport } from "./interfaces";
+import { ReportType } from "./enums";
 
-class ReportController<T extends IReport> {
-  constructor(
-    private readonly handlers: IReportHandlers<T>,
-    private readonly appService: AppService,
-  ) {}
+@Controller("/report/:type")
+export class AppController {
+  constructor(private readonly appService: AppService) {}
 
   @Get()
-  getReports() {
-    return this.handlers.getReports();
+  getReports(@Param("type") type: ReportType) {
+    return this.appService.getReports(type);
   }
 
   @Get(":id")
-  getReport(@Param("id") id: string) {
-    const report = this.handlers.getReport(id);
+  getReport(@Param("type") type: ReportType, @Param("id") id: string) {
+    const report = this.appService.getReport(type, id);
     if (report) { return report; }
-    throw new NotFoundException(`No report with the identifier ${id} could be found.`);
+    throw new NotFoundException("No report was found with the provided identifier.");
   }
 
   @Post()
-  createReport() {
-    return this.handlers.createReport();
+  createReport(@Body() body: INewReport, @Param("type") type: ReportType) {
+    return this.appService.createReport(type, body);
   }
 
   @Put(":id")
-  updateReport(@Param("id") id: string) {
-    return this.handlers.updateReport(id);
+  updateReport(@Param("type") type: ReportType, @Param("id") id: string) {
+    const updaters = {
+      [ReportType.Income]: this.appService.updateIncomeReport,
+      [ReportType.Expense]: this.appService.updateExpenseReport,
+    }
+    return updaters[type](id);
   }
 
   @Delete(":id")
-  deleteReport(@Param("id") id: string) {
-    return this.handlers.deleteReport(id);
-  }
-}
-
-@Controller("/report/incomes")
-export class IncomeReportController extends ReportController<IIncomeReport> {
-  constructor(appService: AppService) {
-    super(
-      {
-        getReports: appService.getIncomeReports,
-        getReport: appService.getIncomeReport,
-        createReport: appService.createIncomeReport,
-        updateReport: appService.updateIncomeReport,
-        deleteReport: appService.deleteIncomeReport,
-      },
-      appService,
-    );
-  }
-}
-
-@Controller("/report/expenses")
-export class ExpenseReportController extends ReportController<IExpenseReport> {
-  constructor(appService: AppService) {
-    super(
-      {
-        getReports: appService.getExpenseReports,
-        getReport: appService.getExpenseReport,
-        createReport: appService.createExpenseReport,
-        updateReport: appService.updateExpenseReport,
-        deleteReport: appService.deleteExpenseReport,
-      },
-      appService,
-    );
+  deleteReport(@Param("type") type: ReportType, @Param("id") id: string) {
+    const deleters = {
+      [ReportType.Income]: this.appService.deleteIncomeReport,
+      [ReportType.Expense]: this.appService.deleteExpenseReport,
+    }
+    return deleters[type](id);
   }
 }
