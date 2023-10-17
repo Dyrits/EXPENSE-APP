@@ -17,7 +17,7 @@ export class AppController {
   @Get(":id")
   getReport(@Param("type") type: string, @Param("id") id: string) {
     const getters = {
-      "incomes": this.appService.getIncomeReports,
+      "incomes": this.appService.getIncomeReport,
       "expenses": this.appService.getExpenseReport,
     }
     return getters[type](id);
