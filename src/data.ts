@@ -1,3 +1,8 @@
+export enum ReportType {
+  Income = 'incomes',
+  Expense = 'expenses',
+}
+
 interface IReport {
   id?: string;
   source: string;
@@ -6,7 +11,7 @@ interface IReport {
     created: Date,
     updated: Date,
   };
-  type: string;
+  type: ReportType.Expense | ReportType.Income;
 }
 
 interface IData {
@@ -23,7 +28,7 @@ export const data: IData = {
         created: new Date(),
         updated: new Date(),
       },
-      type: 'incomes',
+      type: ReportType.Income,
     }
   ]
 }
