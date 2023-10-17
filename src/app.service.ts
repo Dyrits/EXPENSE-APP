@@ -18,9 +18,11 @@ export class AppService {
   }
 
   createReport(type: ReportType, body: INewReport): IReport {
+    const { source, amount } = body;
     const report: IReport = {
       id: uuid(),
-      ...body,
+      source,
+      amount,
       timestamps: {
         created: new Date(),
         updated: new Date(),
