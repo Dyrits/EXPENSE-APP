@@ -14,11 +14,11 @@ export class AppService {
     return {};
   }
 
-  updateIncomeReport() {
+  updateIncomeReport(id) {
     return {};
   }
 
-  deleteIncomeReport() {
+  deleteIncomeReport(id) {
     return {};
   }
 
@@ -34,11 +34,11 @@ export class AppService {
     return {};
   }
 
-  updateExpenseReport() {
+  updateExpenseReport(id) {
     return {};
   }
 
-  deleteExpenseReport() {
+  deleteExpenseReport(id) {
     return {};
   }
 }
