@@ -13,8 +13,7 @@ export class AppService {
   }
 
   getReport(type: ReportType, id: string): IReport {
-    const reports = this.getReports(type);
-    return reports.find((report: IReport) => report.id === id);
+    return data.reports.find((report: IReport) => report.type === type && report.id === id);
   }
 
   createReport(type: ReportType, body: INewReport): IReport {
@@ -44,10 +43,9 @@ export class AppService {
   }
 
   deleteReport(type: ReportType, id: string) {
-    const reports = this.getReports(type);
-    const index = reports.findIndex((report: IReport) => report.id === id);
+    const index = data.reports.findIndex((report: IReport) => report.type === type && report.id === id);
     if (~index) {
-      reports.splice(index, 1);
+      data.reports.splice(index, 1);
       return {};
     }
   }

@@ -18,7 +18,7 @@ export const data: IData = {
     },
     {
       id: uuid(),
-      source: "Rend",
+      source: "Rent",
       amount: 500,
       timestamps: {
         created: new Date(),

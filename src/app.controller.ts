@@ -1,10 +1,10 @@
-import { Controller, Delete, Get, NotFoundException, Param, Post, Put, Body, HttpCode } from "@nestjs/common";
+import { Controller, Delete, Get, NotFoundException, Param, Post, Patch, Body, HttpCode } from "@nestjs/common";
 
 import { AppService } from "./app.service";
 import { INewReport, IUpdatedReport } from "./interfaces";
 import { ReportType } from "./enums";
 
-@Controller("/report/:type")
+@Controller("/reports/:type")
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
@@ -25,7 +25,7 @@ export class AppController {
     return this.appService.createReport(type, body);
   }
 
-  @Put(":id")
+  @Patch(":id")
   updateReport(@Body() body: IUpdatedReport, @Param("type") type: ReportType, @Param("id") id: string) {
     const report = this.appService.updateReport(type, id, body);
     if (report) { return report; }
