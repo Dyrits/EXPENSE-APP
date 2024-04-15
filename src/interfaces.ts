@@ -6,10 +6,8 @@ export interface INewReport {
 }
 
 export interface IUpdatedReport {
-  id?: string;
   source?: string;
   amount?: number;
-  type: ReportType.Income | ReportType.Expense;
 }
 
 export interface IReport extends INewReport {

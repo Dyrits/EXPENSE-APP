@@ -33,7 +33,7 @@ export class AppService {
   }
 
   updateReport(type: ReportType, id: string, body: IUpdatedReport): IReport {
-    const report = this.getReport(type, id);
+    const report: IReport = this.getReport(type, id);
     if (report) {
       report.source = body.source || report.source;
       report.amount = body.amount || report.amount;
@@ -43,7 +43,7 @@ export class AppService {
   }
 
   deleteReport(type: ReportType, id: string) {
-    const index = data.reports.findIndex((report: IReport) => report.type === type && report.id === id);
+    const index: number = data.reports.findIndex((report: IReport) => report.type === type && report.id === id);
     if (~index) {
       data.reports.splice(index, 1);
       return {};
