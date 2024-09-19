@@ -7,7 +7,6 @@ import { data } from "./data";
 
 @Injectable()
 export class AppService {
-
   getReports(type: ReportType): IReport[] {
     return data.reports.filter((report: IReport) => report.type === type);
   }
@@ -24,10 +23,10 @@ export class AppService {
       amount,
       timestamps: {
         created: new Date(),
-        updated: new Date(),
+        updated: new Date()
       },
       type
-    }
+    };
     data.reports.push(report);
     return report;
   }

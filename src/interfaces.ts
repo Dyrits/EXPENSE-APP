@@ -13,8 +13,8 @@ export interface IUpdatedReport {
 export interface IReport extends INewReport {
   id: string;
   timestamps: {
-    created: Date,
-    updated: Date,
+    created: Date;
+    updated: Date;
   };
   type: ReportType.Expense | ReportType.Income;
 }

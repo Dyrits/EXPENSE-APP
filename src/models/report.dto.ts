@@ -1,6 +1,8 @@
 import { IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString } from "class-validator";
+import { Exclude, Expose } from "class-transformer";
 
-import { INewReport, IUpdatedReport } from "../interfaces";
+import { INewReport, IReport, IUpdatedReport } from "../interfaces";
+import { ReportType } from "../enums";
 
 class NewReportDTO implements INewReport {
   @IsString()
@@ -23,4 +25,25 @@ class UpdatedReportDTO implements IUpdatedReport {
   amount: number;
 }
 
-export { NewReportDTO, UpdatedReportDTO };
+class ReportDTO implements IReport {
+  id: string;
+  source: string;
+  amount: number;
+  type: ReportType;
+  @Exclude()
+  timestamps: {
+    created: Date;
+    updated: Date;
+  };
+
+  @Expose({ name: "created" })
+  created?() {
+    return this.timestamps.created;
+  }
+
+  constructor(partial: Partial<IReport>) {
+    Object.assign(this, partial);
+  }
+}
+
+export { NewReportDTO, UpdatedReportDTO, ReportDTO };

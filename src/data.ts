@@ -3,7 +3,6 @@ import { v4 as uuid } from "uuid";
 import { ReportType } from "./enums";
 import { IData } from "./interfaces";
 
-
 export const data: IData = {
   reports: [
     {
@@ -28,4 +27,3 @@ export const data: IData = {
     }
   ]
 };
-
